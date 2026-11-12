@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Découvrir le BIM — Alliance BIM NC</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       Alliance BIM NC — parcours « Découvrir le BIM » (niveau 1).
+       v1 (18/10/2026). Same palette and faces as index.html.
+       Own code only: no third-party script, no cookie, no form.
+       Progress (steps done, current step) is kept in the visitor's
+       own browser (localStorage), never sent anywhere — see
+       confidentialite.html.
+       ============================================================ */
+    :root{
+      --color-lagon:#0E6E7C; --color-laterite:#B0431F; --color-sand:#F5EFE1;
+      --color-panel:#EDE5D3; --color-paper:#FBF8F1;
+      --color-ink:#211C15; --color-ink-soft:#6B6255; --color-ok:#2F7D4F;
+      --hairline:rgba(33,28,21,.14);
+      --font-display:"Fraunces", Georgia, serif;
+      --font-body:"IBM Plex Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
+      --font-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+      --side:290px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;background:var(--color-sand);color:var(--color-ink);font-family:var(--font-body);font-size:17px;line-height:1.65}
+    a{color:var(--color-lagon)}
+    [hidden]{display:none!important}
+
+    .site-header{position:sticky;top:0;z-index:5;background:var(--color-sand);border-bottom:1px solid var(--hairline)}
+    .site-header .bar{display:flex;align-items:center;gap:16px;min-height:60px;padding:0 24px}
+    .site-brand{font-family:var(--font-display);font-size:1.25rem;font-weight:600;color:var(--color-ink);text-decoration:none;white-space:nowrap}
+    .crumb{font-family:var(--font-mono);font-size:12px;color:var(--color-ink-soft);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .prog{flex:1;min-width:60px;height:6px;background:var(--color-panel);border-radius:3px;overflow:hidden}
+    .prog i{display:block;height:100%;width:0;background:var(--color-lagon);transition:width .3s}
+    .menu-btn{display:none;font:500 13px var(--font-mono);background:none;border:1px solid var(--hairline);color:var(--color-ink);padding:6px 10px;border-radius:4px;cursor:pointer}
+
+    .shell{display:grid;grid-template-columns:var(--side) minmax(0,1fr)}
+    nav.steps{background:var(--color-panel);border-right:1px solid var(--hairline);padding:22px 0 30px;position:sticky;top:61px;align-self:start;max-height:calc(100vh - 61px);overflow-y:auto}
+    .lvl{padding:0 20px 14px;border-bottom:1px solid var(--hairline);margin-bottom:10px}
+    .lvl small{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-soft)}
+    .lvl h2{font-family:var(--font-display);font-weight:600;font-size:22px;line-height:1.15;margin:4px 0 2px}
+    .lvl p{margin:0;font-family:var(--font-mono);font-size:12px;color:var(--color-ink-soft)}
+    .part{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-laterite);padding:16px 20px 6px}
+    nav.steps button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:22px 1fr auto;gap:8px;align-items:start;width:100%;padding:8px 20px;cursor:pointer;font-family:var(--font-body);font-size:15px;line-height:1.35}
+    nav.steps button:hover{background:rgba(14,110,124,.07)}
+    nav.steps button:focus-visible{outline:2px solid var(--color-lagon);outline-offset:-2px}
+    nav.steps button[aria-current="step"]{background:var(--color-sand);box-shadow:inset 3px 0 0 var(--color-lagon);font-weight:600}
+    .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--color-ink-soft);margin-top:2px;display:grid;place-items:center;font-size:10px;color:#fff}
+    .done .dot{background:var(--color-lagon);border-color:var(--color-lagon)}
+    .done .dot::after{content:"✓"}
+    .min{font-family:var(--font-mono);font-size:11px;color:var(--color-ink-soft);margin-top:3px;font-variant-numeric:tabular-nums}
+
+    main{padding:36px 24px 60px;min-width:0}
+    article{max-width:68ch;margin:0 auto}
+    article section{display:none}
+    article section.on{display:block}
+    .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-laterite);margin:0 0 6px}
+    h1{font-family:var(--font-display);font-weight:600;font-size:clamp(1.9rem,4.5vw,2.6rem);line-height:1.1;letter-spacing:-.01em;margin:0 0 18px;text-wrap:balance}
+    h3{font-family:var(--font-display);font-weight:600;font-size:1.3rem;margin:30px 0 8px;text-wrap:balance}
+    h4{font-family:var(--font-display);font-weight:500;font-size:1.1rem;margin:22px 0 6px}
+    p{margin:0 0 14px}
+    strong{font-weight:600}
+    .case{border-left:3px solid var(--color-laterite);background:var(--color-paper);padding:14px 18px;margin:20px 0;border-radius:0 6px 6px 0}
+    .case b{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-laterite);font-weight:500;display:block;margin-bottom:4px}
+    .case p:last-child{margin:0}
+    .chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:22px 0;font-family:var(--font-mono);font-size:12px;text-align:center}
+    .chain div{border:1px solid var(--hairline);border-radius:4px;padding:10px 4px;background:var(--color-paper)}
+    .chain div em{display:block;font-style:normal;color:var(--color-lagon);font-size:11px}
+    .tw{overflow-x:auto;margin:16px 0 20px}
+    table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.45}
+    th,td{border-bottom:1px solid var(--hairline);padding:9px 10px;text-align:left;vertical-align:top}
+    th{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-ink-soft);font-weight:500}
+    td:first-child{font-family:var(--font-mono);font-size:14px;color:var(--color-lagon);white-space:nowrap}
+    .quiz{border:1px solid var(--hairline);border-radius:6px;padding:18px 20px;margin:26px 0;background:var(--color-paper)}
+    .quiz .q{font-weight:600;margin-bottom:10px}
+    .quiz .opts{display:grid;gap:8px}
+    .quiz button{all:unset;box-sizing:border-box;border:1px solid var(--hairline);background:#fff;border-radius:4px;padding:9px 12px;cursor:pointer;font-family:var(--font-body);font-size:15.5px;line-height:1.4}
+    .quiz button:hover{border-color:var(--color-lagon)}
+    .quiz button:focus-visible{outline:2px solid var(--color-lagon)}
+    .quiz button.right{border-color:var(--color-ok);box-shadow:inset 3px 0 0 var(--color-ok)}
+    .quiz button.wrong{border-color:var(--color-laterite);box-shadow:inset 3px 0 0 var(--color-laterite)}
+    .quiz .fb{margin:10px 0 0;font-size:15px}
+    .quiz .fb[data-ok="1"]::before{content:"Juste. ";font-weight:600;color:var(--color-ok)}
+    .quiz .fb[data-ok="0"]::before{content:"À revoir. ";font-weight:600;color:var(--color-laterite)}
+    .score{font-family:var(--font-mono);font-size:14px;color:var(--color-ink-soft);margin-top:10px}
+    .pager{display:flex;justify-content:space-between;gap:12px;margin-top:38px;padding-top:18px;border-top:1px solid var(--hairline);flex-wrap:wrap}
+    .pager button{font:600 15px var(--font-body);border-radius:4px;padding:11px 20px;cursor:pointer;border:1px solid var(--hairline);background:none;color:var(--color-ink)}
+    .pager button.next{background:var(--color-lagon);border-color:var(--color-lagon);color:#fff}
+    .pager button.next:hover{background:#0b5a65}
+    .pager button:disabled{opacity:.35;cursor:default}
+    .pager button:focus-visible{outline:2px solid var(--color-ink);outline-offset:2px}
+
+    .site-footer{border-top:1px solid var(--hairline);padding:24px 0}
+    .site-footer .wrap{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between;font-weight:500;color:var(--color-lagon)}
+    .site-footer .status{font-size:.9rem;color:var(--color-ink-soft);font-weight:400;margin:0}
+
+    @media (max-width:860px){
+      .shell{grid-template-columns:1fr}
+      .menu-btn{display:inline-block}
+      nav.steps{display:none;position:static;max-height:none;border-right:0;border-bottom:1px solid var(--hairline)}
+      nav.steps.open{display:block}
+      .crumb{display:none}
+    }
+    @media (max-width:640px){
+      body{font-size:16px}
+      .site-header .bar{padding:0 16px}
+      main{padding:28px 16px 48px}
+      .chain{grid-template-columns:1fr}
+    }
+    @media (prefers-reduced-motion:reduce){.prog i{transition:none}}
+  
+    /* v6 (12/11/2026): Alliance logo — emblem in the header, favicon. */
+    .site-brand, .brand { display:inline-flex; align-items:center; gap:.6rem; }
+    .site-brand img, .brand img { height:44px; width:auto; display:block; }
+    @media (max-width:480px){ .site-brand img, .brand img { height:36px; } }
+  </style>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+<header class="site-header"><div class="bar">
+  <a class="site-brand" href="./"><img src="assets/alliance-bimnc-emblem.png" alt="" width="50" height="44"><span>Alliance BIM NC</span></a>
+  <div class="crumb">Parcours · Niveau 1 · Découvrir le BIM</div>
+  <div class="prog" aria-hidden="true"><i id="bar"></i></div>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="steps">Étapes</button>
+</div></header>
+<div class="shell">
+<nav class="steps" id="steps" aria-label="Étapes du module">
+  <div class="lvl"><small>Niveau 1</small><h2>Découvrir le BIM</h2><p>≈ 60 min · 11 étapes</p></div>
+  <div id="stepList"></div>
+</nav>
+
+<main>
+<article id="content">
+
+<!-- ===================== OUVERTURE ===================== -->
+<section data-part="Ouverture" data-title="Bienvenue" data-min="3">
+  <p class="eyebrow">Ouverture</p>
+  <h1>Découvrir le BIM</h1>
+  <p>Ce premier niveau du parcours de l'Alliance s'adresse à toute personne qui entend parler de BIM sans savoir précisément de quoi il s'agit : élus et services techniques des communes, maîtres d'ouvrage, architectes, bureaux d'études, entreprises, étudiants. Il ne demande aucune connaissance préalable et se parcourt en une heure environ.</p>
+  <p>Le module suit un fil simple en trois temps. On regarde d'abord <strong>le problème</strong> : comment l'information d'un projet se perd entre la conception, le chantier et l'exploitation. On voit ensuite <strong>la solution</strong> : la manière dont le BIM structure cette information. On termine par <strong>l'application</strong> : ce que cela change concrètement pour vous, et par quoi commencer.</p>
+  <div class="case"><b>Le cas qui nous accompagne</b><p>Tout au long du module, nous suivons un même projet : la construction d'un groupe scolaire par une commune calédonienne. Ce cas est fictif, mais chacune des situations décrites est courante sur les projets réels.</p></div>
+  <p>À la fin de l'heure, vous saurez expliquer en quelques phrases comment le BIM organise l'information d'un ouvrage, et vous saurez reconnaître un premier pas raisonnable pour votre propre structure. Chaque partie se termine par quelques questions rapides, et une auto-évaluation clôt le module. Votre progression est conservée dans votre navigateur uniquement ; rien n'est transmis à l'Alliance.</p>
+</section>
+
+<!-- ===================== PARTIE 1 ===================== -->
+<section data-part="1 · Le problème" data-title="Le parcours d'une information" data-min="5">
+  <p class="eyebrow">Partie 1 · Le problème</p>
+  <h1>Le parcours d'une information</h1>
+  <p>Pour comprendre ce que le BIM cherche à résoudre, suivons une seule information à travers la vie du groupe scolaire : la description de la <strong>centrale de traitement d'air</strong> qui ventile les salles de classe. C'est un équipement banal, mais son information passe par beaucoup de mains.</p>
+  <h3>Le programme</h3>
+  <p>La commune, maître d'ouvrage, exprime son besoin : des salles ventilées, un confort acceptable pendant la saison chaude, un coût d'exploitation maîtrisé. Ce besoin est rédigé dans le programme, un document texte.</p>
+  <h3>La conception</h3>
+  <p>Le bureau d'études fluides dimensionne l'installation et choisit un type de centrale. Il la décrit dans le cahier des clauses techniques, la dessine sur ses plans et, s'il travaille en maquette numérique, la place dans son modèle avec quelques caractéristiques : débit, puissance, dimensions.</p>
+  <h3>Le chantier</h3>
+  <p>L'entreprise de génie climatique propose un modèle équivalent, disponible plus rapidement chez son fournisseur. La substitution est acceptée en réunion de chantier. La fiche technique du nouveau modèle circule par courriel ; les plans et la maquette, eux, ne sont pas mis à jour.</p>
+  <h3>La réception</h3>
+  <p>À la fin du chantier, l'entreprise remet le dossier des ouvrages exécutés : plusieurs centaines de pages en PDF, dont certaines numérisées depuis le papier, et une notice du fabricant parmi d'autres.</p>
+  <h3>L'exploitation</h3>
+  <p>Un an plus tard, le service technique de la commune doit changer les filtres de la centrale. Il lui faut la référence des filtres et la fréquence de remplacement recommandée. Il cherche dans le dossier, trouve le modèle prévu à la conception, qui n'est pas celui installé, puis finit par monter sur le toit lire la plaque de l'appareil.</p>
+  <div class="case"><b>Ce qu'il faut retenir</b><p>À chaque passage de relais, l'information a été réécrite, transformée ou perdue. Personne n'a commis de faute grave : c'est l'organisation même de l'information qui ne tient pas d'une phase à l'autre.</p></div>
+</section>
+
+<section data-part="1 · Le problème" data-title="Où la chaîne se casse" data-min="5">
+  <p class="eyebrow">Partie 1 · Le problème</p>
+  <h1>Où la chaîne se casse</h1>
+  <p>L'histoire de la centrale de traitement d'air n'a rien d'exceptionnel. Elle montre quatre ruptures que l'on retrouve sur presque tous les projets, quelle que soit leur taille. C'est d'ailleurs la question centrale du diagnostic mené par l'Alliance en Nouvelle-Calédonie : <strong>à quel endroit la chaîne de l'information se casse-t-elle ?</strong></p>
+  <h3>Les changements de phase</h3>
+  <p>Chaque phase est conduite par d'autres acteurs, avec d'autres outils et d'autres priorités. Ce que la conception a produit n'est pas forcément ce dont le chantier a besoin, et ce que le chantier remet n'est pas ce dont l'exploitant a besoin. Faute d'avoir défini à l'avance ce qui doit passer d'une phase à l'autre, chacun reprend l'information à sa façon.</p>
+  <h3>Les formats qui ne se parlent pas</h3>
+  <p>Le bureau d'études travaille avec un logiciel, l'architecte avec un autre, l'entreprise avec un tableur, la commune avec ses propres fichiers. Quand les formats ne sont pas compatibles, l'information est ressaisie à la main, avec les erreurs que cela suppose, ou figée dans des PDF qui ne se lisent plus que par un humain.</p>
+  <h3>Les versions concurrentes</h3>
+  <p>Un plan modifié circule par courriel en indice C pendant qu'une partie de l'équipe travaille encore sur l'indice B. Sans règle claire sur ce qui est en cours, ce qui est partagé et ce qui est validé, personne ne sait avec certitude quelle version fait foi.</p>
+  <h3>L'information sans propriétaire</h3>
+  <p>Après la substitution de la centrale, qui devait mettre à jour la maquette ? L'entreprise pensait que c'était le bureau d'études, le bureau d'études pensait que ce n'était plus sa mission. Une information dont personne n'est responsable finit toujours par être fausse.</p>
+</section>
+
+<section data-part="1 · Le problème" data-title="Ce que ça coûte" data-min="5">
+  <p class="eyebrow">Partie 1 · Le problème</p>
+  <h1>Ce que ça coûte</h1>
+  <p>Ces ruptures ont un coût, même s'il est rarement chiffré sur un projet donné. Il se manifeste de trois façons.</p>
+  <p>Il y a d'abord <strong>les reprises</strong> : une gaine qui ne passe pas parce que la poutre a été déplacée sur une autre version du plan, un équipement commandé deux fois, une étude refaite parce que les données d'entrée étaient périmées. Viennent ensuite <strong>les retards</strong>, car chaque information à retrouver ou à vérifier prend du temps à quelqu'un, souvent au moment où le chantier ne peut pas attendre. Enfin, et c'est souvent le coût le plus durable, il y a <strong>l'exploitation à l'aveugle</strong> : la commune reçoit un ouvrage qui fonctionne, mais sans les données qui lui permettraient de l'entretenir, de planifier ses dépenses et de préparer les travaux futurs.</p>
+  <p>Pour une commune, ce dernier point pèse lourd. Un groupe scolaire vit plusieurs décennies ; sa construction ne dure que deux ou trois ans. L'essentiel de la valeur de l'information se joue donc après la remise des clés.</p>
+
+  <div class="quiz" data-answer="c" data-explain="L'exemple montre que chacun a fait son travail : c'est l'absence de règles partagées sur l'information, d'une phase à l'autre, qui produit la perte.">
+    <div class="q">Dans l'histoire de la centrale de traitement d'air, quelle est la cause principale du problème rencontré par le service technique ?</div>
+    <div class="opts"><button data-o="a">Une erreur de dimensionnement du bureau d'études</button><button data-o="b">Un manque de compétence de l'entreprise</button><button data-o="c">L'absence de règles sur la manière dont l'information passe d'une phase à l'autre</button></div>
+    <p class="fb" hidden></p>
+  </div>
+  <div class="quiz" data-answer="b" data-explain="L'ouvrage est exploité pendant des décennies : c'est là que des données fiables servent le plus longtemps.">
+    <div class="q">Pour une commune, à quel moment l'information sur un ouvrage a-t-elle le plus de valeur ?</div>
+    <div class="opts"><button data-o="a">Pendant la conception</button><button data-o="b">Pendant l'exploitation</button><button data-o="c">À la réception du chantier</button></div>
+    <p class="fb" hidden></p>
+  </div>
+</section>
+
+<!-- ===================== PARTIE 2 ===================== -->
+<section data-part="2 · La solution" data-title="Structurer l'information" data-min="3">
+  <p class="eyebrow">Partie 2 · La solution</p>
+  <h1>Le BIM, c'est structurer l'information</h1>
+  <p>Les ruptures que nous venons de voir ne se règlent pas avec un logiciel de plus. Elles se règlent en s'accordant, dès le départ, sur quatre choses : <strong>quelle information</strong> est nécessaire, <strong>qui la produit</strong>, <strong>sous quelle forme</strong> elle circule, et <strong>comment on vérifie</strong> qu'elle est juste. C'est exactement ce que fait le BIM.</p>
+  <p>La maquette 3D en fait partie, mais elle n'est qu'un contenant parmi d'autres, à côté des documents, des plans et des bases de données. Un projet peut produire de très belles maquettes et rester désorganisé ; à l'inverse, un projet modeste peut être bien géré en BIM avec peu de 3D.</p>
+  <p>L'étape suivante présente les notions qui permettent cette organisation, en une seule vue. Elle est dense : c'est voulu. Lisez-la pour saisir la logique d'ensemble, sans chercher à tout retenir. Nous la rejouerons ensuite sur le cas du groupe scolaire.</p>
+</section>
+
+<section data-part="2 · La solution" data-title="Les essentiels du BIM" data-min="12">
+  <p class="eyebrow">Partie 2 · La solution</p>
+  <h1>Les essentiels du BIM</h1>
+  <p>Le BIM ne se résume pas à la maquette 3D. C'est une manière d'organiser l'information qui sert à concevoir, construire puis exploiter un ouvrage : qui en a besoin, sous quelle forme, à quel moment, et comment on vérifie qu'elle est juste. La maquette n'est qu'un des contenants de cette information, à côté des documents, des plans et des bases de données.</p>
+  <p>Cette page rassemble, en une lecture, les notions que l'on rencontre dans tout projet mené en BIM. Elles proviennent de deux familles de référentiels internationaux : la série de normes <strong>ISO 19650</strong>, qui traite de la gestion de l'information, et les standards ouverts de <strong>buildingSMART</strong>, regroupés sous le nom d'<strong>openBIM</strong>, qui traitent de l'échange des données entre logiciels. Les sigles sont d'origine anglaise ; nous les gardons, car ce sont eux que l'on retrouve dans les cahiers des charges.</p>
+  <h3>Une chaîne en cinq temps</h3>
+  <p>Un projet BIM suit une logique simple. On commence par <strong>exprimer les besoins</strong> d'information, puis on <strong>planifie</strong> la manière dont l'équipe va les produire. L'information est ensuite <strong>échangée</strong> entre les intervenants, <strong>vérifiée</strong> au regard des besoins de départ, et enfin <strong>remise</strong> au maître d'ouvrage pour l'exploitation. Chaque notion présentée ci-dessous intervient à l'un de ces temps.</p>
+  <div class="chain" aria-hidden="true"><div>Exprimer<em>OIR · AIR · PIR · EIR</em></div><div>Planifier<em>BEP · LOIN</em></div><div>Échanger<em>CDE · IFC · BCF</em></div><div>Vérifier<em>IDS · bSDD</em></div><div>Remettre<em>AIR satisfaites</em></div></div>
+
+  <h3>La gestion de l'information selon l'ISO 19650</h3>
+  <h4>Exprimer les besoins : de l'organisation au projet</h4>
+  <p>Les besoins d'information se déclinent du plus général au plus précis. Les <strong>exigences d'information de l'organisation</strong> (OIR, <em>Organizational Information Requirements</em>) partent des décisions que le maître d'ouvrage doit prendre dans la conduite de son activité : entretenir son patrimoine, planifier ses investissements, répondre à ses obligations. Elles se traduisent ensuite de deux côtés. Les <strong>exigences d'information de l'actif</strong> (AIR, <em>Asset Information Requirements</em>) décrivent les données dont l'exploitant aura besoin pour faire fonctionner et maintenir l'ouvrage. Les <strong>exigences d'information du projet</strong> (PIR, <em>Project Information Requirements</em>) décrivent ce qu'il faut savoir pour prendre les décisions clés du projet, à chaque étape de validation.</p>
+  <p>Ces besoins deviennent contractuels dans les <strong>exigences d'échange d'information</strong> (EIR, <em>Exchange Information Requirements</em>). C'est le document que le maître d'ouvrage transmet aux équipes : il précise les livrables attendus, leurs échéances, leur format et, surtout, les <strong>critères d'acceptation</strong> qui permettront de dire si un livrable est conforme.</p>
+  <h4>Planifier la production : le plan d'exécution BIM</h4>
+  <p>En réponse aux EIR, l'équipe de projet rédige son <strong>plan d'exécution BIM</strong> (BEP, <em>BIM Execution Plan</em>). Il décrit qui produit quoi, avec quelles méthodes, quelles conventions de nommage et quelle organisation de la coordination. Un BEP réussi est un document sur lequel toute l'équipe s'est accordée avant de produire, et non un document rédigé pour la forme.</p>
+  <h4>Partager l'information : l'environnement commun de données</h4>
+  <p>L'<strong>environnement commun de données</strong> (CDE, <em>Common Data Environment</em>) est l'espace, et surtout l'ensemble de règles, par lequel l'information circule entre les intervenants. Il ne s'agit pas forcément d'un logiciel unique : ce qui compte est que chaque information ait un statut connu, une révision identifiée et un historique de validation traçable. L'ISO 19650 distingue quatre états.</p>
+  <div class="tw"><table><thead><tr><th>État</th><th>Ce qu'il signifie</th></tr></thead><tbody>
+    <tr><td>En cours</td><td>L'information est en cours de production par son auteur et n'est visible que de son équipe (<em>Work in progress</em>).</td></tr>
+    <tr><td>Partagé</td><td>L'information est mise à disposition des autres intervenants pour la coordination (<em>Shared</em>).</td></tr>
+    <tr><td>Publié</td><td>L'information est validée et autorisée pour l'usage prévu, par exemple la construction (<em>Published</em>).</td></tr>
+    <tr><td>Archivé</td><td>L'information est conservée pour la traçabilité, avec l'historique de ses états successifs (<em>Archived</em>).</td></tr>
+  </tbody></table></div>
+  <h4>Doser le détail : le niveau d'information nécessaire</h4>
+  <p>Le <strong>niveau d'information nécessaire</strong> (LOIN, <em>Level of Information Need</em>) précise, pour chaque objet et chaque étape, le degré de détail géométrique, les données alphanumériques et les documents attendus. Le principe est de produire ce qui est utile à la décision ou à l'usage prévu, et pas davantage. La méthode est normalisée par l'ISO 7817-1.</p>
+
+  <h3>L'openBIM : échanger sans dépendre d'un logiciel</h3>
+  <p>Sur un projet, chaque intervenant travaille avec ses propres outils. Les standards openBIM permettent à l'information de passer de l'un à l'autre sans être enfermée dans le format d'un éditeur.</p>
+  <p>L'<strong>IFC</strong> (<em>Industry Foundation Classes</em>, norme ISO 16739-1) est le format d'échange neutre des maquettes et de leurs données. Il décrit les objets d'un ouvrage, leurs propriétés et leurs relations, quel que soit le logiciel qui les a produits.</p>
+  <p>L'<strong>IDS</strong> (<em>Information Delivery Specification</em>) traduit les exigences d'information en règles lisibles par une machine. Il permet de vérifier automatiquement qu'un fichier IFC contient bien les objets et les propriétés demandés, et donc de rendre les critères d'acceptation des EIR réellement contrôlables.</p>
+  <p>Le <strong>BCF</strong> (<em>BIM Collaboration Format</em>) sert à gérer les problèmes relevés dans les maquettes. Chaque remarque est rattachée à un point de vue précis, attribuée à un responsable et suivie jusqu'à sa résolution, sans échanger de nouveau toute la maquette.</p>
+  <p>Le <strong>bSDD</strong> (<em>buildingSMART Data Dictionary</em>) est un dictionnaire en ligne de classes et de propriétés définies. En s'y référant, les intervenants emploient les mêmes termes pour désigner les mêmes choses.</p>
+
+  <h3>En résumé</h3>
+  <div class="tw"><table><thead><tr><th>Notion</th><th>À quoi elle sert</th><th>Ce que l'on vérifie</th></tr></thead><tbody>
+    <tr><td>OIR</td><td>Relier l'information aux décisions de l'organisation</td><td>Les décisions sont bien éclairées</td></tr>
+    <tr><td>AIR</td><td>Définir les données utiles à l'exploitation</td><td>Les données remises sont exploitables</td></tr>
+    <tr><td>PIR</td><td>Définir l'information nécessaire aux étapes du projet</td><td>Chaque validation dispose des éléments attendus</td></tr>
+    <tr><td>EIR</td><td>Fixer les livrables, leurs échéances et leur qualité</td><td>Les critères d'acceptation sont respectés</td></tr>
+    <tr><td>BEP</td><td>Organiser la production de l'équipe</td><td>L'équipe s'est accordée sur sa méthode</td></tr>
+    <tr><td>CDE</td><td>Faire circuler l'information sous contrôle</td><td>Révisions et validations sont traçables</td></tr>
+    <tr><td>LOIN</td><td>Doser le détail attendu</td><td>L'information est adaptée à son usage</td></tr>
+    <tr><td>IFC</td><td>Échanger les maquettes en format neutre</td><td>Le fichier est conforme au schéma</td></tr>
+    <tr><td>IDS</td><td>Contrôler automatiquement les exigences</td><td>Les propriétés demandées sont présentes</td></tr>
+    <tr><td>BCF</td><td>Suivre les problèmes de coordination</td><td>Chaque problème a un responsable et une issue</td></tr>
+    <tr><td>bSDD</td><td>Partager des définitions communes</td><td>Le vocabulaire est cohérent</td></tr>
+  </tbody></table></div>
+  <h3>Deux volets à ne pas oublier</h3>
+  <p>La série ISO 19650 comporte aussi deux parties transversales. L'<strong>ISO 19650-5</strong> traite de la sécurité de l'information : certaines données sur un ouvrage, comme les plans d'un équipement sensible, ne doivent pas circuler librement. L'<strong>ISO 19650-6</strong> traite de l'information de santé et de sécurité, afin que les risques identifiés pendant la conception et le chantier soient transmis à ceux qui interviendront ensuite.</p>
+  <h3>En pratique</h3>
+  <p>Le conseil le plus utile tient en trois gestes. Définir les critères d'acceptation dans les EIR avant que la production ne commence, plutôt qu'au moment de la remise. Vérifier les fichiers IFC au moyen d'un IDS, pour que le contrôle repose sur des règles et non sur une impression. Traiter les problèmes suivis en BCF avant la remise, pour que l'exploitant reçoive une information propre.</p>
+</section>
+
+<section data-part="2 · La solution" data-title="Le cas revisité" data-min="5">
+  <p class="eyebrow">Partie 2 · La solution</p>
+  <h1>Le groupe scolaire, revisité</h1>
+  <p>Reprenons le projet du groupe scolaire, cette fois mené avec les notions que nous venons de voir. Chaque rupture de la première partie trouve sa réponse.</p>
+  <h3>Les changements de phase</h3>
+  <p>Avant de lancer le projet, la commune a défini ses <strong>AIR</strong> : pour chaque équipement technique, elle veut la marque, le modèle installé, la référence des consommables et la fréquence d'entretien. Ces exigences figurent dans les <strong>EIR</strong> jointes au marché, avec un critère d'acceptation simple : un équipement sans ces données n'est pas accepté à la réception. Le <strong>LOIN</strong> précise au passage que la commune n'a pas besoin d'une géométrie détaillée de la centrale, seulement de son encombrement et de ses données.</p>
+  <h3>Les formats qui ne se parlent pas</h3>
+  <p>Chaque intervenant garde son logiciel, mais tous échangent leurs maquettes au format <strong>IFC</strong>. La centrale y apparaît comme un objet, avec ses propriétés lisibles par tous. Les noms de ces propriétés suivent des définitions communes, publiées dans le <strong>bSDD</strong>, pour que « débit nominal » désigne la même chose pour tout le monde.</p>
+  <h3>Les versions concurrentes</h3>
+  <p>Les plans et les maquettes ne circulent plus par courriel : ils sont déposés dans le <strong>CDE</strong> du projet. L'entreprise sait qu'elle ne construit qu'à partir de l'information à l'état <strong>publié</strong>. Quand la gaine de ventilation entre en conflit avec une poutre, le problème est signalé par un <strong>BCF</strong>, attribué au bureau d'études et suivi jusqu'à sa résolution.</p>
+  <h3>L'information sans propriétaire</h3>
+  <p>Le <strong>BEP</strong> précise qui met à jour la maquette après une substitution d'équipement en phase chantier : ici, l'entreprise, qui renseigne le modèle réellement installé. Avant la réception, un contrôle par <strong>IDS</strong> vérifie automatiquement que chaque équipement porte bien les données demandées par la commune.</p>
+  <div class="case"><b>Le résultat</b><p>Un an après la livraison, le service technique ouvre la fiche de la centrale et y trouve la référence des filtres et la fréquence de remplacement. Personne ne monte sur le toit pour lire une plaque.</p></div>
+
+  <div class="quiz" data-answer="a" data-explain="Les EIR portent les exigences du maître d'ouvrage et leurs critères d'acceptation ; c'est là que la commune fixe ce qu'elle veut recevoir.">
+    <div class="q">Dans quel document la commune fixe-t-elle les données qu'elle veut recevoir et les critères pour les accepter ?</div>
+    <div class="opts"><button data-o="a">Les EIR</button><button data-o="b">Le BEP</button><button data-o="c">Le fichier IFC</button></div>
+    <p class="fb" hidden></p>
+  </div>
+  <div class="quiz" data-answer="c" data-explain="Seule l'information à l'état publié est autorisée pour l'usage prévu, comme la construction. L'état partagé sert à la coordination.">
+    <div class="q">À partir de quel état du CDE l'entreprise peut-elle construire ?</div>
+    <div class="opts"><button data-o="a">En cours</button><button data-o="b">Partagé</button><button data-o="c">Publié</button></div>
+    <p class="fb" hidden></p>
+  </div>
+</section>
+
+<!-- ===================== PARTIE 3 ===================== -->
+<section data-part="3 · L'application" data-title="Ce que ça change pour vous" data-min="6">
+  <p class="eyebrow">Partie 3 · L'application</p>
+  <h1>Ce que ça change pour vous</h1>
+  <p>Le BIM ne demande pas la même chose à chacun. Selon votre place dans le projet, le changement porte sur des gestes différents.</p>
+  <h3>Vous êtes une commune ou un maître d'ouvrage</h3>
+  <p>Votre rôle est d'abord de <strong>dire ce dont vous avez besoin</strong>. C'est vous qui exploiterez l'ouvrage pendant des décennies : vos besoins d'exploitation, traduits en AIR puis en EIR, orientent tout le reste. Vous n'avez pas à maîtriser les logiciels ; vous devez savoir formuler vos exigences et vérifier qu'elles sont tenues à la réception.</p>
+  <h3>Vous êtes architecte ou bureau d'études</h3>
+  <p>Votre rôle est de <strong>répondre de façon organisée</strong>. Vous traduisez les EIR en un BEP partagé avec vos partenaires, vous structurez vos maquettes pour qu'elles portent les bonnes données au bon niveau de détail, et vous les échangez en IFC. Le gain pour vous est une coordination plus sûre et moins de reprises.</p>
+  <h3>Vous êtes une entreprise</h3>
+  <p>Votre rôle est de <strong>faire vivre l'information jusqu'à la remise</strong>. Vous consultez les plans publiés dans le CDE, vous signalez et traitez les problèmes en BCF, et vous renseignez ce qui a réellement été construit. C'est souvent vous qui détenez l'information la plus juste sur l'ouvrage livré.</p>
+</section>
+
+<section data-part="3 · L'application" data-title="Par où commencer" data-min="6">
+  <p class="eyebrow">Partie 3 · L'application</p>
+  <h1>Par où commencer</h1>
+  <p>Aucune de ces notions n'exige de tout mettre en place d'un coup. Une structure de petite taille peut commencer par une seule brique, sur un projet pilote, puis élargir. Voici un premier pas raisonnable pour chaque profil.</p>
+  <h3>Pour une commune ou un maître d'ouvrage</h3>
+  <p>Pour votre prochain projet, choisissez trois types d'équipements que vos services entretiennent souvent, et listez pour chacun les données dont ils ont besoin au quotidien. Joignez cette liste au marché comme exigence de remise. Vous venez d'écrire vos premières AIR.</p>
+  <h3>Pour un architecte ou un bureau d'études</h3>
+  <p>Sur un projet en cours, convenez avec vos partenaires d'une convention de nommage des fichiers et d'une règle simple sur les états des documents : en cours, partagé, publié. C'est le cœur d'un CDE, avant même tout outil.</p>
+  <h3>Pour une entreprise</h3>
+  <p>Demandez les maquettes au format IFC et ouvrez-les avec une visionneuse IFC gratuite : vous y verrez les objets et leurs propriétés. À la réception, proposez de remettre les fiches de vos équipements sous forme de tableau structuré plutôt qu'en PDF.</p>
+  <p>Si vous souhaitez en parler pour votre structure, écrivez-nous à <strong>accueil@bim.nc</strong>.</p>
+</section>
+
+<section data-part="3 · L'application" data-title="Auto-évaluation" data-min="5">
+  <p class="eyebrow">Partie 3 · L'application</p>
+  <h1>Auto-évaluation</h1>
+  <p>Huit questions pour vérifier que vous avez saisi l'essentiel. Il n'y a pas de piège ; si une réponse vous échappe, revenez à l'étape concernée.</p>
+  <div class="quiz" data-answer="b" data-explain="Le BIM organise l'information ; la maquette n'en est qu'un contenant.">
+    <div class="q">1. Le BIM, c'est avant tout…</div>
+    <div class="opts"><button data-o="a">Un logiciel de modélisation 3D</button><button data-o="b">Une manière d'organiser l'information d'un ouvrage</button><button data-o="c">Un format de fichier</button></div><p class="fb" hidden></p></div>
+  <div class="quiz" data-answer="a" data-explain="Les AIR décrivent ce dont l'exploitant aura besoin pour faire fonctionner et maintenir l'ouvrage.">
+    <div class="q">2. Quelles exigences décrivent les données nécessaires à l'exploitation de l'ouvrage ?</div>
+    <div class="opts"><button data-o="a">Les AIR</button><button data-o="b">Les PIR</button><button data-o="c">Le BEP</button></div><p class="fb" hidden></p></div>
+  <div class="quiz" data-answer="c" data-explain="Le BEP est la réponse de l'équipe aux EIR : qui produit quoi, comment, avec quelles conventions.">
+    <div class="q">3. Qui rédige le BEP ?</div>
+    <div class="opts"><button data-o="a">Le maître d'ouvrage</button><button data-o="b">L'exploitant</button><button data-o="c">L'équipe de projet, en réponse aux EIR</button></div><p class="fb" hidden></p></div>
+  <div class="quiz" data-answer="b" data-explain="L'état partagé met l'information à disposition des autres pour la coordination, sans l'autoriser encore pour la construction.">
+    <div class="q">4. Un plan mis à disposition des autres intervenants pour coordination est à l'état…</div>
+    <div class="opts"><button data-o="a">En cours</button><button data-o="b">Partagé</button><button data-o="c">Archivé</button></div><p class="fb" hidden></p></div>
+  <div class="quiz" data-answer="a" data-explain="L'IFC est le format d'échange neutre, normalisé par l'ISO 16739-1.">
+    <div class="q">5. Quel standard permet d'échanger une maquette entre logiciels différents ?</div>
+    <div class="opts"><button data-o="a">L'IFC</button><button data-o="b">Le BCF</button><button data-o="c">Le LOIN</button></div><p class="fb" hidden></p></div>
+  <div class="quiz" data-answer="c" data-explain="Le BCF rattache chaque problème à un point de vue, un responsable et un suivi, sans renvoyer toute la maquette.">
+    <div class="q">6. Une gaine entre en conflit avec une poutre. Quel standard sert à signaler et suivre ce problème ?</div>
+    <div class="opts"><button data-o="a">L'IDS</button><button data-o="b">Le bSDD</button><button data-o="c">Le BCF</button></div><p class="fb" hidden></p></div>
+  <div class="quiz" data-answer="b" data-explain="L'IDS traduit les exigences en règles lisibles par une machine, pour contrôler un IFC automatiquement.">
+    <div class="q">7. Comment vérifier automatiquement qu'un fichier IFC contient les propriétés demandées ?</div>
+    <div class="opts"><button data-o="a">En le comparant au BEP</button><button data-o="b">Avec un IDS</button><button data-o="c">En l'archivant dans le CDE</button></div><p class="fb" hidden></p></div>
+  <div class="quiz" data-answer="a" data-explain="Une première brique sur un projet pilote suffit ; on élargit ensuite.">
+    <div class="q">8. Pour une petite structure, quelle est la meilleure façon de commencer ?</div>
+    <div class="opts"><button data-o="a">Une seule brique, sur un projet pilote</button><button data-o="b">Tout mettre en place d'un coup</button><button data-o="c">Attendre une obligation réglementaire</button></div><p class="fb" hidden></p></div>
+  <p class="score" id="score">Répondez aux questions pour voir votre résultat.</p>
+</section>
+
+<!-- ===================== CLÔTURE ===================== -->
+<section data-part="Clôture" data-title="Et ensuite ?" data-min="2">
+  <p class="eyebrow">Clôture</p>
+  <h1>Et ensuite ?</h1>
+  <p>Vous avez parcouru le premier niveau. Vous savez maintenant pourquoi l'information d'un ouvrage se perd, comment le BIM l'organise, et par quoi votre structure peut commencer.</p>
+  <p>Le niveau suivant, <strong>Pratiquer</strong>, passera aux outils de travail : rédiger des EIR simples, mener un échange IFC, contrôler une maquette avec un IDS, définir un niveau d'information nécessaire. Pour être informé de sa parution, <a href="index.html#actualites">inscrivez-vous à la lettre d'information</a> de l'Alliance.</p>
+  <p>Vous pouvez revenir à tout moment à l'étape <strong>Les essentiels du BIM</strong> : elle est faite pour servir de fiche de référence.</p>
+  
+</section>
+
+</article>
+<div class="pager" style="max-width:68ch;margin-inline:auto"><button id="prev">← Précédent</button><button id="next" class="next">Suivant →</button></div>
+</main>
+</div>
+
+
+<footer class="site-footer"><div class="wrap">
+  <a href="mailto:accueil@bim.nc" style="text-decoration:none">accueil@bim.nc</a>
+  <p class="status">Association Alliance BIM NC (loi 1901) — Nouvelle-Calédonie · RIDET 1 678 002.001 · <a href="confidentialite.html">Confidentialité</a></p>
+</div></footer>
+<script>
+(function(){
+  const secs=[...document.querySelectorAll('article section')];
+  const list=document.getElementById('stepList');
+  const KEY='bimnc-decouvrir-v1';
+  let st={done:[],cur:0};
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&Array.isArray(s.done))st=s}catch(e){}
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+  let lastPart=null;const btns=[];
+  secs.forEach((s,i)=>{
+    if(s.dataset.part!==lastPart){lastPart=s.dataset.part;const d=document.createElement('div');d.className='part';d.textContent=lastPart;list.appendChild(d)}
+    const b=document.createElement('button');b.type='button';
+    b.innerHTML='<span class="dot"></span><span></span><span class="min"></span>';
+    b.children[1].textContent=s.dataset.title;b.children[2].textContent=s.dataset.min+' min';
+    b.addEventListener('click',()=>{show(i);closeMenu()});
+    list.appendChild(b);btns.push(b);
+  });
+  const bar=document.getElementById('bar'),prev=document.getElementById('prev'),next=document.getElementById('next');
+  function paint(){
+    btns.forEach((b,i)=>{b.classList.toggle('done',st.done.includes(i));b.toggleAttribute('aria-current',i===st.cur);if(i===st.cur)b.setAttribute('aria-current','step')});
+    bar.style.width=(st.done.length/secs.length*100)+'%';
+    prev.disabled=st.cur===0;next.textContent=st.cur===secs.length-1?'Terminer ✓':'Suivant →';
+  }
+  function show(i){
+    i=Math.max(0,Math.min(secs.length-1,i));
+    secs.forEach((s,j)=>s.classList.toggle('on',j===i));st.cur=i;save();paint();
+    window.scrollTo({top:0});
+  }
+  prev.onclick=()=>show(st.cur-1);
+  next.onclick=()=>{if(!st.done.includes(st.cur))st.done.push(st.cur);if(st.cur<secs.length-1)show(st.cur+1);else{save();paint()}};
+  // quiz
+  const self=secs.find(s=>s.dataset.title==='Auto-évaluation');
+  document.querySelectorAll('.quiz').forEach(q=>{
+    q.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      const ok=b.dataset.o===q.dataset.answer;
+      q.querySelectorAll('button').forEach(x=>x.classList.remove('right','wrong'));
+      b.classList.add(ok?'right':'wrong');
+      if(!ok)q.querySelector('[data-o="'+q.dataset.answer+'"]').classList.add('right');
+      const fb=q.querySelector('.fb');fb.hidden=false;fb.dataset.ok=ok?'1':'0';fb.textContent=q.dataset.explain;
+      q.dataset.res=ok?'1':'0';
+      if(self.contains(q)){const all=[...self.querySelectorAll('.quiz')];const ans=all.filter(x=>x.dataset.res);const good=ans.filter(x=>x.dataset.res==='1').length;
+        document.getElementById('score').textContent=ans.length<all.length?`${ans.length} / ${all.length} questions répondues`:`Résultat : ${good} / ${all.length}`+(good>=6?' — vous avez l’essentiel.':' — reprenez les étapes concernées, puis réessayez.')}
+    }));
+  });
+  // menu mobile
+  const nav=document.getElementById('steps'),mb=document.getElementById('menuBtn');
+  function closeMenu(){nav.classList.remove('open');mb.setAttribute('aria-expanded','false')}
+  mb.onclick=()=>{const o=nav.classList.toggle('open');mb.setAttribute('aria-expanded',o)};
+  show(st.cur||0);
+})();
+</script>
+</body>
+</html>
