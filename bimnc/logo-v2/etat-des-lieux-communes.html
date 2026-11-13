@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>État des lieux BIM : la parole aux communes — Alliance BIM NC</title>
+  <meta name="description" content="Première phase de l'état des lieux BIM en Nouvelle-Calédonie : ce que les communes nous ont dit de la gestion des informations relatives à leurs ouvrages.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================
+       Alliance BIM NC — Observatoire : « État des lieux BIM : la
+       parole aux communes » (Audit 1, première phase).
+       Version publiée v1.0.0.0 (10/11/2026) : texte d'Anne-Laure
+       Vidoire (relecture du 10/11), remarques de Marylène Blancher.
+       Panneau de lecture à gauche (section en cours, sections lues,
+       barre de progression).
+       Code propre au site : aucun script tiers, aucun cookie, aucun
+       formulaire, rien n'est stocké ni envoyé. Sans script, le
+       panneau reste un sommaire.
+       ============================================================ */
+    :root{
+      --color-lagon:#0E6E7C; --color-laterite:#B0431F; --color-sand:#F5EFE1;
+      --color-panel:#EDE5D3; --color-paper:#FBF8F1;
+      --color-ink:#211C15; --color-ink-soft:#6B6255;
+      --hairline:rgba(33,28,21,.14);
+      --font-display:"Fraunces", Georgia, serif;
+      --font-body:"IBM Plex Sans", -apple-system, "Segoe UI", system-ui, sans-serif;
+      --font-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+      --side:290px; --head:61px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--head) + 16px)}
+    body{margin:0;background:var(--color-sand);color:var(--color-ink);font-family:var(--font-body);font-size:17px;line-height:1.7}
+    a{color:var(--color-lagon)}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--color-lagon);outline-offset:3px}
+
+    .site-header{position:sticky;top:0;z-index:5;background:var(--color-sand);border-bottom:1px solid var(--hairline)}
+    .site-header .bar{display:flex;align-items:center;gap:16px;min-height:60px;padding:0 24px}
+    .site-brand{font-family:var(--font-display);font-size:1.25rem;font-weight:600;color:var(--color-ink);text-decoration:none;white-space:nowrap}
+    .crumb{font-family:var(--font-mono);font-size:12px;color:var(--color-ink-soft);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+    .prog{flex:1;min-width:60px;height:6px;background:var(--color-panel);border-radius:3px;overflow:hidden}
+    .prog i{display:block;height:100%;width:0;background:var(--color-lagon);transition:width .15s linear}
+    .menu-btn{display:none;font:500 13px var(--font-mono);background:none;border:1px solid var(--hairline);color:var(--color-ink);padding:6px 10px;border-radius:4px;cursor:pointer}
+
+    .shell{display:grid;grid-template-columns:var(--side) minmax(0,1fr)}
+
+    /* ---- panneau de lecture ---- */
+    nav.toc{background:var(--color-panel);border-right:1px solid var(--hairline);padding:22px 0 30px;position:sticky;top:var(--head);align-self:start;max-height:calc(100vh - var(--head));overflow-y:auto}
+    .lvl{padding:0 20px 14px;border-bottom:1px solid var(--hairline);margin-bottom:10px}
+    .lvl small{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-soft)}
+    .lvl p.t{font-family:var(--font-display);font-weight:600;font-size:21px;line-height:1.15;margin:4px 0 4px}
+    .lvl p.m{margin:0;font-family:var(--font-mono);font-size:12px;color:var(--color-ink-soft)}
+    .part{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-laterite);padding:16px 20px 6px;margin:0}
+    nav.toc ol{list-style:none;margin:0;padding:0}
+    nav.toc a{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start;padding:8px 20px;color:var(--color-ink);text-decoration:none;font-size:15px;line-height:1.35}
+    nav.toc a:hover{background:rgba(14,110,124,.07)}
+    nav.toc a:focus-visible{outline:2px solid var(--color-lagon);outline-offset:-2px}
+    nav.toc a[aria-current="true"]{background:var(--color-sand);box-shadow:inset 3px 0 0 var(--color-lagon);font-weight:600}
+    .dot{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--color-ink-soft);margin-top:2px;display:grid;place-items:center;font-size:10px;color:#fff}
+    .read .dot{background:var(--color-lagon);border-color:var(--color-lagon)}
+    .read .dot::after{content:"✓"}
+
+    /* ---- article ---- */
+    main{padding:0 24px 64px;min-width:0}
+    article{max-width:68ch;margin:0 auto}
+    .page-head{padding:48px 0 8px}
+    .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-laterite);margin:0 0 10px}
+    h1{font-family:var(--font-display);font-weight:600;font-size:clamp(1.9rem,4.5vw,2.7rem);line-height:1.1;letter-spacing:-.01em;margin:0 0 20px;text-wrap:balance}
+    .chapeau{font-size:1.14rem;line-height:1.6;margin:0 0 14px}
+    .chapeau strong{font-weight:600}
+    .page-head p{margin:0 0 14px}
+
+    .part-head{margin:56px 0 0;padding-top:22px;border-top:2px solid var(--color-ink);font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-ink-soft)}
+    .part-intro{margin:14px 0 0}
+    article section{padding-top:36px}
+    h2{font-family:var(--font-display);font-weight:600;font-size:clamp(1.35rem,3vw,1.65rem);line-height:1.15;letter-spacing:-.01em;margin:0 0 14px;text-wrap:balance}
+    h2::before{content:"";display:block;width:40px;height:2px;background:var(--color-laterite);margin-bottom:14px}
+    article p{margin:0 0 14px}
+    article ul{margin:0 0 16px;padding-left:1.3em}
+    article li{margin:0 0 8px}
+    article li::marker{color:var(--color-laterite)}
+    .key{font-family:var(--font-display);font-size:1.2rem;font-weight:500;line-height:1.45}
+
+    .next{margin-top:22px;padding:22px 24px;background:#fff;border:1px solid var(--hairline);border-top:3px solid var(--color-lagon);border-radius:6px}
+    .next p{margin:0}
+    .btn{display:inline-block;margin-top:14px;padding:12px 22px;border-radius:4px;background:var(--color-lagon);color:#fff;font-weight:600;text-decoration:none}
+    .btn:hover{background:#0b5a65}
+    .next .alt{margin-top:14px;font-size:.95rem;color:var(--color-ink-soft)}
+
+    .site-footer{border-top:1px solid var(--hairline);padding:24px 0}
+    .site-footer .wrap{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline;justify-content:space-between}
+    .site-footer a{font-weight:500;text-decoration:none}
+    .site-footer a:hover{text-decoration:underline}
+    .site-footer .status{font-size:.9rem;color:var(--color-ink-soft);margin:0}
+
+    @media (max-width:860px){
+      .shell{grid-template-columns:1fr}
+      .menu-btn{display:inline-block}
+      .js nav.toc{display:none;position:sticky;top:var(--head);z-index:4;max-height:70vh;border-right:0;border-bottom:1px solid var(--hairline);box-shadow:0 8px 20px rgba(33,28,21,.12)}
+      .js nav.toc.open{display:block}
+      nav.toc{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--hairline)}
+      .crumb{display:none}
+    }
+    @media (max-width:640px){
+      body{font-size:16px}
+      .site-header .bar{padding:0 16px}
+      main{padding:0 16px 48px}
+      .page-head{padding-top:32px}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.prog i{transition:none}}
+    @media print{.site-header,nav.toc{display:none}.shell{display:block}body{background:#fff}}
+  
+    /* v6 (12/11/2026): Alliance logo — emblem in the header, favicon. */
+    .site-brand, .brand { display:inline-flex; align-items:center; gap:.6rem; }
+    .site-brand img, .brand img { height:44px; width:auto; display:block; }
+    @media (max-width:480px){ .site-brand img, .brand img { height:36px; } }
+    /* logo-v2 (13/11/2026, IGY-SUP-002): sharper emblem ~1.5x (cap 64px desktop / 44px mobile), name as real text. */
+    .site-brand img, .brand img { height:64px; }
+    .site-brand span, .brand span { font-weight:700; font-size:1.2rem; letter-spacing:.01em; }
+    @media (max-width:480px){ .site-brand img, .brand img { height:44px; } .site-brand span, .brand span { font-size:1.1rem; } }
+  </style>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+</head>
+<body>
+
+<header class="site-header"><div class="bar">
+  <a class="site-brand" href="./"><img src="assets/alliance-bimnc-emblem-v2.png" alt="" width="77" height="64"><span>Alliance BIM.nc</span></a>
+  <div class="crumb">Observatoire · État des lieux</div>
+  <div class="prog" aria-hidden="true"><i id="bar"></i></div>
+  <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="toc">Sommaire</button>
+</div></header>
+
+<div class="shell">
+<nav class="toc" id="toc" aria-label="Sommaire">
+  <div class="lvl"><small>Observatoire · Première phase</small><p class="t">La parole aux communes</p><p class="m">≈ 7 min de lecture · 7 parties</p></div>
+  <p class="part">Ce que nous avons entendu</p>
+  <ol>
+    <li><a href="#ajustements"><span class="dot"></span><span>Des ajustements en cours de projet</span></a></li>
+    <li><a href="#information"><span class="dot"></span><span>Une information technique parfois indisponible</span></a></li>
+    <li><a href="#circulation"><span class="dot"></span><span>Une circulation des informations à renforcer</span></a></li>
+  </ol>
+  <p class="part">Ce que nous avons observé</p>
+  <ol>
+    <li><a href="#territoires"><span class="dot"></span><span>Des réalités territoriales à prendre en compte</span></a></li>
+    <li><a href="#ressources"><span class="dot"></span><span>Des ressources et des pratiques déjà présentes</span></a></li>
+    <li><a href="#confusions"><span class="dot"></span><span>Des confusions entre maquettes 3D et BIM</span></a></li>
+  </ol>
+  <p class="part">Quelles perspectives&nbsp;?</p>
+  <ol>
+    <li><a href="#perspectives"><span class="dot"></span><span>Le BIM en Nouvelle-Calédonie</span></a></li>
+  </ol>
+</nav>
+
+<main>
+<article>
+  <header class="page-head">
+    <p class="eyebrow">Observatoire · État des lieux · Première phase</p>
+    <h1>État des lieux BIM&nbsp;: la parole aux communes</h1>
+    <p class="chapeau"><strong>Entre fin juin et mi-juillet 2026, l'Alliance BIM NC a mené la première phase de son état des lieux BIM en Nouvelle-Calédonie, consacrée aux besoins des communes.</strong> Nous avons échangé avec une trentaine d'interlocuteurs (responsables de services techniques, secrétaires généraux, élus) dans les trois provinces, sur la gestion des informations relatives à leurs ouvrages.</p>
+    <p>À partir de leur expérience et de projets récents, nous avons souhaité comprendre les pratiques et les besoins des communes. Il s'agit pour nous d'identifier, du point de vue institutionnel, les éventuels leviers et freins à une gestion optimale des ouvrages communaux, à chaque étape de leur vie.</p>
+    <p>Nous remercions chaleureusement toutes les personnes qui nous ont accordé de leur temps, souvent au-delà de ce que nous demandions. Leurs propos sont ici anonymisés.</p>
+  </header>
+
+  <p class="part-head">Ce que nous avons entendu</p>
+  <p class="part-intro">Les échanges ont été riches et constructifs. Nous retenons trois éléments saillants de ces entretiens.</p>
+
+  <section id="ajustements">
+    <h2>Des ajustements en cours de projet, sources de surcoûts et de retards</h2>
+    <p class="key">Le premier constat concerne les écarts qui peuvent apparaître entre l'expression initiale des besoins d'une collectivité et la prise en compte des différents éléments susceptibles d'affecter la maîtrise des coûts et des délais d'une opération.</p>
+    <p>Lorsque la commande initiale est formulée de manière trop sommaire, les écarts avec les attentes réelles peuvent apparaître une fois les études engagées, nécessitant des ajustements. D'autres difficultés surviennent lorsque certaines contraintes techniques, environnementales ou financières n'ont pas été suffisamment anticipées. Sur un chantier de réseau mené sans enquête environnementale préalable, la découverte d'espèces endémiques a ainsi conduit à modifier le projet et à relancer le marché.</p>
+    <p>La maîtrise des coûts apparaît comme une préoccupation largement partagée par nos interlocuteurs, et des dépassements budgétaires liés aux ajustements sont relatés. Dans les situations discutées, ces dépassements restent généralement contenus, sous les 5&nbsp;%. Un exemple indique toutefois que l'actualisation des prix entre la consultation et le démarrage du chantier peut représenter un surcoût de l'ordre de 10&nbsp;%.</p>
+    <p>Ces situations soulignent l'importance d'une définition précise des besoins, d'une meilleure anticipation des contraintes et d'un suivi partagé des informations nécessaires aux décisions, depuis la programmation jusqu'à la réalisation des travaux.</p>
+  </section>
+
+  <section id="information">
+    <h2>Une information technique parfois indisponible ou difficilement exploitable</h2>
+    <p class="key">Le deuxième constat porte sur la disponibilité, la qualité et la conservation des documents techniques nécessaires à la connaissance et à la gestion des ouvrages.</p>
+    <p>Les pratiques apparaissent contrastées selon les collectivités et les opérations. À la réception des travaux, les dossiers des ouvrages exécutés (DOE) ne sont pas toujours remis dans des conditions permettant leur exploitation&nbsp;:</p>
+    <ul>
+      <li>remise en version papier, qui rend complexes la conservation, le partage et les modifications&nbsp;;</li>
+      <li>remise sur des supports pour lesquels les collectivités ne disposent plus de lecteur (un cas de remise sur CD a été relevé)&nbsp;;</li>
+      <li>absence des documents&nbsp;: un interlocuteur indique ne recevoir qu'un courriel confirmant la réception du chantier, sans les documents techniques attendus.</li>
+    </ul>
+    <p>Concernant le suivi, certains services techniques ne disposent même pas des plans papier de leurs ouvrages, et encore moins de versions numérisées. Les plans de récolement des réseaux d'eau et d'assainissement ne sont pas toujours actualisés.</p>
+    <p>Au-delà de la remise des documents, leur classement, leur mise à jour et leur accessibilité dans la durée constituent également des difficultés. Une information existante mais dispersée, obsolète ou conservée dans un format inadapté peut devenir difficilement utilisable pour l'entretien, les interventions techniques ou la préparation de nouveaux projets.</p>
+    <p>Ces constats mettent en évidence la nécessité de mieux encadrer la production, la transmission, le classement et la conservation des documents techniques. L'enjeu est de garantir aux collectivités un accès durable à des informations fiables, actualisées et facilement exploitables pour assurer le suivi, l'entretien et la maintenance de leurs ouvrages.</p>
+  </section>
+
+  <section id="circulation">
+    <h2>Une circulation et un partage des informations à renforcer entre les acteurs</h2>
+    <p class="key">Le troisième constat concerne les conditions dans lesquelles les informations nécessaires aux projets sont produites, partagées et transmises entre les différents acteurs.</p>
+    <p>Plusieurs entretiens font apparaître des difficultés dans les échanges entre services d'une même collectivité, entre maîtrise d'ouvrage et maîtrise d'œuvre, ou encore entre les équipes chargées des travaux et celles responsables de l'exploitation des ouvrages.</p>
+    <p>Même lorsque des procédures permettent de mieux récupérer les documents en fin de chantier, leur circulation au sein des organisations reste parfois à améliorer. Le problème ne tient donc pas uniquement à l'existence de l'information, mais aussi à son partage au bon moment, entre les bons interlocuteurs et dans un format adapté aux usages.</p>
+    <p>Ces situations soulèvent la question des responsabilités&nbsp;: qui produit l'information, qui la vérifie, qui la transmet et qui en assure la mise à jour&nbsp;? Elles mettent en évidence l'intérêt de règles communes et de modalités de coordination permettant de conserver une information cohérente et partagée tout au long de la vie d'un ouvrage.</p>
+  </section>
+
+  <p class="part-head">Ce que nous avons observé</p>
+
+  <section id="territoires">
+    <h2>Des réalités territoriales à prendre en compte</h2>
+    <p class="key">La diversité des interlocuteurs interrogés, issus de collectivités aux tailles, capacités budgétaires et contextes sociogéographiques très variés (territoires urbains, ruraux ou contraints), met en évidence des marges de manœuvre fortement hétérogènes dans la conduite de leurs projets.</p>
+    <p>Parmi les différences qui pèsent directement sur la possibilité de gérer efficacement la construction d'un ouvrage et son exploitation, nous relevons&nbsp;:</p>
+    <ul>
+      <li>la capacité d'action et d'ingénierie&nbsp;: une méthode simple à mettre en œuvre dans une grande commune peut représenter une charge importante pour une petite commune ou une commune isolée&nbsp;;</li>
+      <li>le tissu économique&nbsp;: la répartition des entreprises et la raréfaction de certaines spécialités essentielles peuvent augmenter les coûts liés à l'acheminement du matériel et au déplacement d'équipes ou de spécialistes&nbsp;;</li>
+      <li>la prise en compte de l'expérience de terrain&nbsp;: les agents des services techniques, qui connaissent le terrain et son historique (ruissellement, glissements de terrain…), ne sont pas toujours suffisamment associés à la préparation des projets.</li>
+    </ul>
+    <p>D'une manière générale, les entretiens ont mis en lumière une prise en compte encore insuffisante des coûts complets sur l'ensemble de la durée de vie des ouvrages, alors même que cette approche constitue un levier essentiel de la maîtrise budgétaire des collectivités et de la durabilité des ouvrages.</p>
+  </section>
+
+  <section id="ressources">
+    <h2>Des ressources et des pratiques déjà présentes</h2>
+    <p class="key">Nos échanges font également apparaître plusieurs ressources, compétences et initiatives locales qui constituent autant de points d'appui pour améliorer la gestion et le partage de l'information.</p>
+    <ul>
+      <li>Des pratiques de coordination jugées utiles, notamment dans le cadre de certains grands projets.</li>
+      <li>Des procédures d'intégration des DOE au système d'information géographique (SIG), pour alimenter la base de données des ouvrages.</li>
+      <li>Une démarche d'évaluation du patrimoine bâti, reposant sur un simple tableur et des critères tels que la solidité, le fonctionnement, la sécurité ou la performance énergétique, pour apprécier l'état des bâtiments et planifier les interventions.</li>
+      <li>Des dispositifs d'appui administratif, technique et financier aux communes, qui constituent des ressources pour accompagner leurs projets.</li>
+    </ul>
+    <p>Ces exemples témoignent de compétences et de méthodes déjà mobilisées sur le territoire, parfois à partir d'outils courants. Si leur déploiement reste variable selon les organisations et les projets, ils constituent des acquis sur lesquels s'appuyer pour faire évoluer les pratiques, sans repartir de zéro ni imposer de solution standardisée.</p>
+  </section>
+
+  <section id="confusions">
+    <h2>Des confusions entre maquettes 3D et BIM</h2>
+    <p class="key">Alors que le BIM vise à structurer, partager et actualiser les informations relatives à un ouvrage tout au long de son cycle de vie, nos échanges font apparaître une perception encore restrictive de cette démarche, principalement associée à la maquette 3D.</p>
+    <p>Dans de nombreuses communes, le terme BIM reste peu familier, même si certaines ont déjà conduit ou étudié des projets qui y font appel. Plusieurs interlocuteurs s'interrogent ainsi sur son intérêt, dans la mesure où les maîtres d'œuvre proposent déjà des présentations visuelles des projets avant leur réalisation.</p>
+    <p>Cette perception met en évidence un décalage entre les possibilités offertes par le BIM et les usages qui lui sont associés. Visualiser un projet pour faciliter la décision et disposer d'informations structurées et exploitables pour assurer la gestion et la maintenance d'un ouvrage répondent en effet à des besoins distincts.</p>
+  </section>
+
+  <p class="part-head">Quelles perspectives pour le BIM en Nouvelle-Calédonie&nbsp;?</p>
+
+  <section id="perspectives">
+    <h2>Un besoin transversal&nbsp;: mieux gérer l'information des ouvrages</h2>
+    <p class="key">Ce premier état des lieux fait apparaître un besoin transversal&nbsp;: mieux définir, produire, transmettre et conserver les informations utiles à la réalisation et à la gestion des ouvrages.</p>
+    <p>Ces attentes s'inscrivent dans des enjeux plus larges de maîtrise des coûts, d'optimisation des ressources financières, de mutualisation des moyens et de développement des compétences et des activités économiques locales. Elles ne traduisent pas une demande généralisée de maquettes 3D, mais des difficultés auxquelles certaines méthodes associées au BIM pourraient apporter des réponses.</p>
+    <p>Le BIM peut contribuer à répondre à ces enjeux en améliorant la définition des besoins dès la commande, en structurant les échanges entre les intervenants et en facilitant la transmission et la réutilisation des informations tout au long du cycle de vie des ouvrages. Ces pratiques peuvent favoriser une meilleure anticipation des contraintes, limiter les pertes d'information et les reprises coûteuses, et améliorer la gestion du patrimoine sur le long terme.</p>
+    <p>Les différences de moyens, de compétences et de besoins entre les collectivités invitent toutefois à envisager un déploiement progressif et proportionné, en s'appuyant sur les pratiques existantes et les possibilités de mutualisation. La définition de livrables communs, l'amélioration des procédures de transmission, la formation des acteurs et le développement de compétences locales constituent ainsi de premières pistes à explorer.</p>
+    <p>Les prochains échanges avec les professionnels de la conception et de la construction permettront de confronter ces constats à leurs pratiques, d'approfondir les possibilités de coopération et d'identifier les conditions d'une démarche BIM adaptée aux réalités calédoniennes.</p>
+    <div class="next">
+      <p>Vous êtes maître d'ouvrage, professionnel du BTP, bailleur de fonds ou simplement intéressé par ces questions&nbsp;? Inscrivez-vous à notre lettre d'information pour suivre la suite de l'état des lieux.</p>
+      <a class="btn" href="https://6b01653f.sibforms.com/serve/MUIFAE9hYDTh6KquQLvWyYC_fSN6jKT_SWc3BArPuwvHT1YmYNTqTFQSqe1oqdmcmQbbyAuwjO-Gh_aMGQyKHMGG6MDRBdnHz1WdSDUb8wvy5VYQY0k5Lk-Eydx6oM6KXbrRGySvzQrK2oR7TUm3QK1N6lU1eii2W59ignWOPV8JRF9hbixQSiuwmsJ5VKtbPqs16u2r8nUo68wBWQ==" target="_blank" rel="noopener">S'inscrire à la lettre d'information</a>
+      <p class="alt">Pour contribuer à l'état des lieux, écrivez-nous à <a href="mailto:accueil@bim.nc">accueil@bim.nc</a>.</p>
+    </div>
+  </section>
+</article>
+</main>
+</div>
+
+<footer class="site-footer"><div class="wrap">
+  <a href="mailto:accueil@bim.nc">accueil@bim.nc</a>
+  <p class="status">Association Alliance BIM NC (loi 1901) — Nouvelle-Calédonie · RIDET 1 678 002.001 · <a href="confidentialite.html">Confidentialité</a></p>
+</div></footer>
+
+<script>
+/* Panneau de lecture : met en évidence la section lue, coche les
+   sections déjà passées, remplit la barre de progression. Code
+   propre au site ; rien n'est stocké ni envoyé. */
+(function () {
+  document.documentElement.classList.add('js');
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav.toc a'));
+  var sections = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var bar = document.getElementById('bar');
+  var toc = document.getElementById('toc');
+  var btn = document.getElementById('menuBtn');
+  var ticking = false;
+
+  function update() {
+    ticking = false;
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    var ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 1;
+    bar.style.width = (ratio * 100) + '%';
+
+    var line = window.innerHeight * 0.35;
+    var current = 0;
+    sections.forEach(function (s, i) { if (s.getBoundingClientRect().top <= line) current = i; });
+    if (ratio >= 0.995) current = sections.length - 1;
+
+    links.forEach(function (a, i) {
+      var s = sections[i];
+      var passed = s.getBoundingClientRect().bottom <= line || (ratio >= 0.995);
+      a.classList.toggle('read', passed);
+      if (i === current) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+  }
+  function onScroll() { if (!ticking) { ticking = true; window.requestAnimationFrame(update); } }
+
+  btn.addEventListener('click', function () {
+    var open = toc.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (toc.classList.contains('open')) { toc.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); }
+    });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+</script>
+</body>
+</html>
